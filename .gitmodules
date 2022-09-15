@@ -1,0 +1,3 @@
+[submodule "Bash/pentesting_directory"]
+	path = Bash/pentesting_directory
+	url = git@github.com:GaboLC98/pentesting_directory.git
