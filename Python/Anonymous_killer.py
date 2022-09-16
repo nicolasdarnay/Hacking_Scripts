@@ -30,6 +30,7 @@ def sanitized(banner):
     salida2 = salida[1].strip("()")
     salida3 = salida[2].strip("()")
     sanitized = salida2+' '+salida3
+    print(sanitized)
     
     return search_exp(sanitized)
 
