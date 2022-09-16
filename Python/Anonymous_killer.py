@@ -1,5 +1,6 @@
 from ftplib import FTP
 from socket import *
+import os
 
 print('''
            __                  __        __  
@@ -17,25 +18,35 @@ def anonymous_try(target,usr,passwd,port):
 
     ftp = FTP(host=target)
     ftp.connect(port=port)
-    ftp.login(user=usr,passwd=passwd) 
+    ftp.login(user=usr,passwd=passwd)
     print('[+] ~ Anonymous login allowed')
-    return anonymous_login(target,port)
+    print('[+] ~ Banner detected:')
+    banner = ftp.getwelcome()
+    print(banner)
+    return sanitized(banner)
 
-def anonymous_login(target,port):
-    '''This function should allow user to get a ftp shell'''#function help
+def sanitized(banner):
+    salida = banner.split(" ")
+    salida2 = salida[1].strip("()")
+    salida3 = salida[2].strip("()")
+    sanitized = salida2+' '+salida3
+    
+    return search_exp(sanitized)
 
-    print(f'[~] ~ Trying to connect {target}')
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Doesn't work. Learning how to use socket lib
-    sock.connect((target,port))
-    print('[+] ~ Done, have fun')
+def search_exp(sanitized):
+    os.system(f"searchsploit {sanitized}")
 
 #Code
-target = input(f'Enter remote host: ') #Remote host (ftp server)
-port = int(input(f'Enter remote port: ')) #Port 21 by default
-user = 'anonymous' #User to login
-password = 'pwnd' #Password to login
+if os.system('find /usr/bin/searchsploit >/dev/null 2>&1') == 0:
+    target = input(f'Enter remote host: ') #Remote host (ftp server)
+    port = int(input(f'Enter remote port: ')) #Port 21 by default
+    user = 'anonymous' #User to login
+    password = 'pwnd' #Password to login
 
-try: #Try to connect
-    anonymous_try(target,user,password,port)
-except: 
-    print("[-] ~ Anonymous login disallowed or couldn't connect")
+    try: #Try to connect
+        anonymous_try(target,user,password,port)
+    except: 
+        print("[-] ~ Anonymous login disallowed or couldn't connect")
+    
+else:
+    print("[-] ~ Searchsploit not installed... bye")
