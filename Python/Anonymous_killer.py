@@ -16,6 +16,7 @@ def anonymous_try(target,usr,passwd,port):
     '''This function try to connect with anonymous credentials'''#function help
 
     ftp = FTP(host=target)
+    ftp.connect(port=port)
     ftp.login(user=usr,passwd=passwd) 
     print('[+] ~ Anonymous login allowed')
     return anonymous_login(target,port)
@@ -23,15 +24,14 @@ def anonymous_try(target,usr,passwd,port):
 def anonymous_login(target,port):
     '''This function should allow user to get a ftp shell'''#function help
 
-    print('[~] ~ Trying to connect')
-    sock = socket(family=AF_INET) #Doesn't work. Learning how to use socket lib
-    sock.connect(target,port)
-    print('[~] ~ Trying to connect')
-    print('[+] ~ Done have fun')
+    print(f'[~] ~ Trying to connect {target}')
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Doesn't work. Learning how to use socket lib
+    sock.connect((target,port))
+    print('[+] ~ Done, have fun')
 
 #Code
 target = input(f'Enter remote host: ') #Remote host (ftp server)
-port = 21 #Port 21 by default
+port = int(input(f'Enter remote port: ')) #Port 21 by default
 user = 'anonymous' #User to login
 password = 'pwnd' #Password to login
 
